@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+import YouTube from 'react-youtube';
+import movieTrailer from "movie-trailer";
 // 以下はexport default request をrenmeしたもの
 // defaultなので、renameできる
 import axios from "./axios";
@@ -8,6 +10,7 @@ const base_url = "http://image.tmdb.org/t/p/original/";
 
 const Row = ( { title, fetchUrl, isLargeRow } ) => {
     const [movies, setMovies] = useState([]);
+    const [trailerUrl, setTrailerUrl] = useState("");
 
     useEffect(()=>{
       async function fetchData () {
@@ -19,24 +22,46 @@ const Row = ( { title, fetchUrl, isLargeRow } ) => {
       fetchData();
     },[fetchUrl]);
 
+    const opts = {
+        height:"390",
+        width: "100%",
+        playerVars: {
+            autoplay: 1,
+        },
+    };
+
+    const handleClick = (movie) => {
+        // movieTrailerはYoutubeから予告を探して取ってくる。
+        if (trailerUrl) {
+            setTrailerUrl("");
+        } else {
+            movieTrailer(movie?.name || "")
+            .then(url =>{
+                const urlParams = new URLSearchParams(new URL(url).search);
+                setTrailerUrl(urlParams.get("v"));
+
+            })
+            .catch((error) => console.log(error))
+        }
+    };
+
     return (
         <div className="row">
-            {/* titel */}
+            
             <h2>{title}</h2>
 
             <div className="row_posters">
-                {/* severeal row_posters */}
                 {movies.map(movie=>(
                     <img 
                     key={movie.id}
+                    onClick={() => handleClick(movie)}
                     className={`row_poster ${isLargeRow && "row_posterLarge"}`}
                     src={`${base_url}${isLargeRow ? movie.poster_path : movie.backdrop_path}`}
                     alt={movie.name}/>
                 ))}
             </div>
-            {/* container => posters */}
 
-            
+            {trailerUrl && <YouTube videoID={trailerUrl} opts={opts} />}
             
         </div>
     )
