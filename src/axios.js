@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// 毎回リクエストを送るたびに、先頭に来る
+// This baseUrl is the first url every time a request has been sent. 
 const instance = axios.create(
     {baseURL: "https://api.themoviedb.org/3",}
 );
