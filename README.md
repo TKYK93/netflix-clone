@@ -4,4 +4,4 @@ This project was built in accordance with the instructuion provided by Clever Pr
 ## Built With 
 - React
 - TMDb API
-- react-youtube (a thin layer over the Youtube IFrame Player API) build by tjallingt 
+- react-youtube (a thin layer over the Youtube IFrame Player API) buil by tjallingt 
