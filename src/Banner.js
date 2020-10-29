@@ -4,8 +4,8 @@ import requests from "./request";
 import './Banner.css';
 
 const Banner = () => {
-const [movie, setMovie] = useState([]);
 
+const [movie, setMovie] = useState([]);
 
 useEffect(() => {
     async function fetchData() {
@@ -14,12 +14,8 @@ useEffect(() => {
             request.data.results[
                 Math.floor(Math.random() * request.data.results.length - 1)]
         );
-        
     }
-    
     fetchData();
-    
-    
     },[]);
 
     const truncate = (str,n) => {
@@ -36,11 +32,9 @@ useEffect(() => {
                backgroundPosition: "center center",
            }}
         > 
-
             <div className="banner_contents">
             {/* title */}
             <h1 className="banner_title">
-                {/* もしーでなければ */}
                 {movie?.title || movie?.name || movie?.original_name}
             </h1>
 

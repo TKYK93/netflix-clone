@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import YouTube from 'react-youtube';
 import movieTrailer from "movie-trailer";
-// 以下はexport default request をrenmeしたもの
-// defaultなので、renameできる
 import axios from "./axios";
 import './Row.css';
 
@@ -15,13 +13,13 @@ const Row = ( { title, fetchUrl, isLargeRow } ) => {
     useEffect(()=>{
       async function fetchData () {
         const request = await axios.get(fetchUrl);
-// 　　　　 console.log(request);
         setMovies(request.data.results);
         return request;
       };
       fetchData();
     },[fetchUrl]);
 
+    // For Youtube
     const opts = {
         height:"390",
         width: "100%",
@@ -31,17 +29,14 @@ const Row = ( { title, fetchUrl, isLargeRow } ) => {
     };
 
     const handleClick = (movie) => {
-        // movieTrailerはYoutubeから予告を探して取ってくる。
         if (trailerUrl) {
             setTrailerUrl("");
         } else {
-            console.log(movie?.name);
-            movieTrailer(movie?.name || "")
+            // movieTrailer finds URL of a searched trailer in Youtube.
+            movieTrailer(movie?.name || movie?.original_title || "")
             .then((url) =>{
                 const urlParams = new URLSearchParams(new URL(url).search);
-                console.log(urlParams);
                 setTrailerUrl(urlParams.get("v"));
-
             })
             .catch((error) => console.log(error))
         }
@@ -63,7 +58,7 @@ const Row = ( { title, fetchUrl, isLargeRow } ) => {
                 ))}
             </div>
 
-            {trailerUrl && <YouTube videoID={trailerUrl} opts={opts} />}
+            {trailerUrl && <YouTube videoId={trailerUrl} opts={opts} />}
             
         </div>
     )
