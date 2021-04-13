@@ -32,13 +32,16 @@ const Row = ( { title, fetchUrl, isLargeRow } ) => {
         if (trailerUrl) {
             setTrailerUrl("");
         } else {
-            // movieTrailer finds URL of a searched trailer in Youtube.
-            movieTrailer(movie?.name || movie?.original_title || "")
+            const movieName = movie.title || movie.original_title || movie.name || movie.original_name || ""
+            // movieTrailer finds moiveName in Youtube
+            movieTrailer(movieName)
             .then((url) =>{
                 const urlParams = new URLSearchParams(new URL(url).search);
                 setTrailerUrl(urlParams.get("v"));
             })
-            .catch((error) => console.log(error))
+            .catch((error) => {
+                window.alert("Sorry, the movie trailer is not found.")
+                console.log("err:", error)})
         }
     };
 
